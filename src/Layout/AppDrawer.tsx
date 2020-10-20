@@ -1,10 +1,14 @@
+import { makeStyles, Theme, createStyles, Drawer, Divider, IconButton } from '@material-ui/core';
+import { ChevronLeft } from '@material-ui/icons';
 import React from 'react';
-import {makeStyles, Theme, createStyles, Box, Drawer, IconButton} from '@material-ui/core';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import UsersList from '../Users/components/UsersList';
+import { Alert } from './Alert';
+import { DrawerContentString } from './types';
 
 interface DrawerProps {
-    open: boolean;
+    open: boolean,
     closeDrawer: () => void;
+    content?: DrawerContentString;
 }
 
 export const drawerWidth = 500;
@@ -29,33 +33,28 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 )
 
-
-
-export default function AppDrawer(){
-    const [open, setOpen] = React.useState(false);
-
+function AppDrawer({ open, closeDrawer, content }: DrawerProps){
     const classes = useStyles();
 
-    const closeDrawer = () => {
-        setOpen(false);
-    };
     return (
         <Drawer
             variant="persistent"
             anchor="left"
             open={open}
+            onClose={closeDrawer}
             classes={{
                 paper: classes.paper,
             }}
         >
             <div className={classes.drawerHeader}>
                 <IconButton onClick={closeDrawer}>
-                    <ChevronLeftIcon />
+                    <ChevronLeft />
                 </IconButton>
             </div>
-            <Box>
-                <h1>Coucou Toto</h1>
-            </Box>
+            <Divider />
+            {content === "users" ? <UsersList /> : <Alert  status='error' error="Drawer content invalid"/>}
         </Drawer>
     )
 }
+
+export default AppDrawer;

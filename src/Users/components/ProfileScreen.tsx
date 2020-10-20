@@ -7,13 +7,15 @@ import CredentialSection from '../../Login/components/CredentialSection';
 import {IFormField, IPasswordField, RegisterFormKey} from '../../Login/types';
 import {
     defaultPasswordFormField,
-    defaultStringFormField, 
+    defaultStringFormField,
     validateConfirmationField,
     validateEmailField,
-    validateNameField, 
+    validateNameField,
     validatePasswordField
 } from '../../Login/utils/validateForm';
 import {getConnectedUser} from '../../Api/users';
+import { Loading } from '../../Layout/Loading';
+import { ErrorScreen } from '../../Layout/ErrorScreen';
 
 interface IProfileScreenState {
     status: 'error' | 'success' | 'unavailable'
@@ -98,11 +100,15 @@ export default class ProfileScreen extends Component<{}, IProfileScreenState> {
         }
     }
     render(){
-        const { email, firstname, lastname, password, confirmation } = this.state;
-        return (
-            <Container maxWidth='sm'>
-                <form onSubmit={this.handleSubmit}>
-                    <Box style={{margin: '2rem 0'}}>
+        const { email, firstname, lastname, password, confirmation, status } = this.state;
+        if(status === "error") {
+            return <ErrorScreen errorMessage='Sorry, you need to be connected to access this page' />
+        } else if (status === "unavailable"){
+            return <Loading />
+        } else {
+            return <Container maxWidth="sm">
+                <form >
+                    <Box style={{margin: "2rem 0"}}>
                         <IdentitySection
                             email={email}
                             firstname={firstname}
@@ -110,29 +116,29 @@ export default class ProfileScreen extends Component<{}, IProfileScreenState> {
                             handleChange={this.handleChange}
                         />
                     </Box>
-                    <Box style={{margin: '2rem 0'}}>
+                    <Box style={{margin: "2rem 0"}}>
                         <CredentialSection
                             password={password}
                             confirmation={confirmation}
                             handleChange={this.handleChange}
-                            required={false}
+                            required
                         />
                     </Box>
-                    <Box style={{margin: '2rem 0'}}>
-                        <Grid container justify='flex-end'>
+                    <Box style={{margin: "2rem 0"}}>
+                        <Grid container justify="flex-end">
                             <Grid item xs={4}>
                                 <Button
-                                    type='submit'
-                                    color='primary'
-                                    variant='contained'
+                                    type="submit"
+                                    color="primary"
+                                    variant="contained"
                                 >
-                                    Register
+                                    Update Profile
                                 </Button>
                             </Grid>
                         </Grid>
                     </Box>
                 </form>
             </Container>
-        )
+        }
     }
 }
