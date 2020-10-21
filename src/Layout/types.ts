@@ -1,1 +1,1 @@
-export type DrawerContentString = 'users'
+export type DrawerContentString = 'users' | 'conversations'

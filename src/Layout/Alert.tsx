@@ -1,7 +1,6 @@
 import React from 'react';
 import LabAlert from '@material-ui/lab/Alert';
 
-
 export interface IAlertProps {
     status: string;
     error?: string;
