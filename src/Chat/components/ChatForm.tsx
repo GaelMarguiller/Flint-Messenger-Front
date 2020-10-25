@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {Box, Button, Container, Grid} from '@material-ui/core';
 import ChatListMessage from './ChatListMessage';
 import ChatInput from './ChatInput';
-import { RegisterFormKey} from '../../Login/types';
+import { RegisterFormKey} from '../../Login/loginTypes';
 import {getConversations} from "../../Api/messages";
 import {IConversation} from "../chatTypes";
 import {Loading} from "../../Layout/Loading";

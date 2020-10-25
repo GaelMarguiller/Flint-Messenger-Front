@@ -6,22 +6,26 @@ import './App.css';
 import AppLayout from './Layout/AppLayout';
 import history from './history';
 import { blue, red } from '@material-ui/core/colors';
+import {Provider} from 'react-redux';
+import store from './store';
 
 const theme = createMuiTheme({
     palette: {
         primary: blue,
         secondary: {
-            main: "#000"
+            main: '#000'
         },
         error: red,
     },
 })
 export default function App() {
     return (
-        <Router history={history}>
-            <ThemeProvider theme={theme}>
-                <AppLayout />
-            </ThemeProvider>
-        </Router>
+        <Provider store={store}>
+            <Router history={history}>
+                <ThemeProvider theme={theme}>
+                    <AppLayout />
+                </ThemeProvider>
+            </Router>
+        </Provider>
     );
 }

@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core';
 import React, {Component, Fragment} from 'react';
-import { IFormField, IPasswordField, RegisterFormKey } from '../types';
+import { IFormField, IPasswordField, RegisterFormKey } from '../loginTypes';
 
 interface CredentialSectionProps {
     password: IPasswordField;

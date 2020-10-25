@@ -1,4 +1,4 @@
-import { IFormField, IPasswordField } from '../types';
+import { IFormField, IPasswordField } from '../loginTypes';
 
 export function defaultStringFormField(): IFormField<string>{
     return {

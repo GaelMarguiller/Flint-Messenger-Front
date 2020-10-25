@@ -1,6 +1,6 @@
 import { ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
 import React from 'react';
-import { IUser } from '../usersType';
+import { IUser } from '../usersTypes';
 
 interface UsersListItemProps{
     user: IUser;

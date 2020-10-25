@@ -1,14 +1,19 @@
-import React, { Component } from 'react';
+import React, {Component, Dispatch} from 'react';
 import {Box, Button, Container, Grid, TextField} from '@material-ui/core';
-import {login} from '../../Api/users';
+import {login} from '../../Api/login';
+import {connect} from 'react-redux';
 
 interface LoginFormState {
     email: string;
     password: string;
 }
 
-export default class LoginForm extends Component<{}, LoginFormState> {
-    constructor(props: {}) {
+export interface ILoginProps {
+    loginProps: (email: string, password: string) => void;
+}
+
+class LoginForm extends Component<ILoginProps, LoginFormState> {
+    constructor(props: ILoginProps) {
         super(props);
 
         this.state = {
@@ -26,12 +31,7 @@ export default class LoginForm extends Component<{}, LoginFormState> {
 
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        login(this.state.email, this.state.password).then((user) => this.setState({
-            ...this.state,
-            [user._id]: {
-                ...user
-            }
-        }));
+        this.props.loginProps(this.state.email, this.state.password);
     }
 
     render(){
@@ -76,3 +76,9 @@ export default class LoginForm extends Component<{}, LoginFormState> {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
+    loginProps: (email: string, password: string) => { dispatch(login(email, password)) }
+})
+
+export default connect(null, mapDispatchToProps)(LoginForm);

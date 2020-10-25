@@ -1,32 +1,69 @@
 import axios from 'axios'
-import { IUser } from '../Users/usersType';
+import {Dispatch} from 'react';
 
-export function getUsers(): Promise<IUser[]> {
-    return axios.get('http://localhost:3002/api/users').then(res => res.data);
+import {IUser, UsersAction} from '../Users/usersTypes';
+
+import {
+    getListUsers,
+    getListUsersError,
+    getListUsersSuccess, getUserError, getUserSuccess, requestGetUser,
+    requestUpdateUser, updateUserError,
+    updateUserSuccess
+} from '../Users/actions/usersActions';
+
+export function getUsers(): (dispatch: Dispatch<UsersAction>) => Promise<void> {
+    return (dispatch: Dispatch<UsersAction>) => {
+        dispatch(getListUsers())
+        return axios.get(
+            `http://localhost:3002/api/users`,
+            {withCredentials: true}
+        ).then(response => {
+            dispatch(getListUsersSuccess(response.data))
+        }).catch(error => {
+            dispatch(getListUsersError(error))
+        });
+    }
 }
 
-export function getConnectedUser(): Promise<IUser>{
+export function getUser(id: string): (dispatch: Dispatch<UsersAction>) => Promise<void> {
+    return (dispatch: Dispatch<UsersAction>) => {
+        dispatch(requestGetUser())
+        return axios.get(
+            `http://localhost:3002/api/users/${id}`,
+            {withCredentials: true}
+        ).then(response => {
+            dispatch(getUserSuccess(response.data))
+        }).catch(error => {
+            dispatch(getUserError(error))
+        });
+    }
+}
+
+export function getUpdateUser(
+    id: string,
+    firstname?: string,
+    lastname?: string,
+    email?: string,
+    password?: string
+): (dispatch: Dispatch<UsersAction>) => Promise<void> {
+    return (dispatch: Dispatch<UsersAction>) => {
+        dispatch(requestUpdateUser())
+        return axios.post(
+            `http://localhost:3002/api/users/${id}`,
+            {firstname, lastname, email, password},
+            {withCredentials: true}
+        ).then(response => {
+            dispatch(updateUserSuccess(response.data))
+        }).catch(error => {
+            dispatch(updateUserError(error))
+        });
+    }
+}
+
+export function getConnectedUser(): Promise<IUser> {
     return axios.get(
         'http://localhost:3002/api/users/me',
-        { withCredentials: true }
+        {withCredentials: true}
     ).then(res => res.data);
 }
-export function login(email: string, password: string): Promise<IUser>{
-    return axios.post(
-        'http://localhost:3002/api/login/',
-        {
-            username: email,
-            password: password
-        },
-        {
-            withCredentials: true
-        }
-    ).then(res => res.data)
-}
 
-export function registerUser(formValue: {}): Promise<string> {
-    return axios.post(
-        'http://localhost:3002/api/users',
-        {...formValue}
-    ).then(res => res.data)
-}

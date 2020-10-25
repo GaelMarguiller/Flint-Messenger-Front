@@ -1,6 +1,6 @@
 import { TextField } from '@material-ui/core';
 import React, {Component, Fragment} from 'react';
-import { IFormField, RegisterFormKey } from '../types';
+import { IFormField, RegisterFormKey } from '../loginTypes';
 
 interface IdentitySectionProps {
     email: IFormField<string>;

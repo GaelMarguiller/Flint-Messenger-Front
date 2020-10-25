@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react';
 import {TextField} from '@material-ui/core';
-import { RegisterFormKey} from '../../Login/types';
 
 /*interface ChatInputProps {
     message: string;

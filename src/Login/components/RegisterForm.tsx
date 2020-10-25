@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 
 import CredentialSection from './CredentialSection';
 import IdentitySection from './IdentitySection';
 import { Container, Box, Button, Grid } from '@material-ui/core';
 
-import { IFormField, IPasswordField, RegisterFormKey } from '../types';
+import { IFormField, IPasswordField, RegisterFormKey } from '../loginTypes';
 
 import {
     defaultPasswordFormField,
@@ -14,7 +15,9 @@ import {
     validateNameField,
     validatePasswordField
 } from '../utils/validateForm';
-import {registerUser} from "../../Api/users";
+
+import {registerUser} from '../../Api/login';
+
 
 interface RegisterFormState{
     email: IFormField<string>;
@@ -24,8 +27,17 @@ interface RegisterFormState{
     confirmation: IFormField<string>;
 }
 
-export default class RegisterForm extends Component<{}, RegisterFormState> {
-    constructor(props: {}){
+export interface IRegisterProps {
+    registerProps: (
+        firstname: IFormField<string>,
+        lastname: IFormField<string>,
+        email: IFormField<string>,
+        password: IPasswordField,
+    ) => void;
+}
+
+class RegisterForm extends Component<IRegisterProps, RegisterFormState> {
+    constructor(props: IRegisterProps){
         super(props);
         this.state = {
             email: defaultStringFormField(),
@@ -63,25 +75,21 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
 
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
-        const { email, firstname, lastname, password, confirmation } = this.state
-        if(email.isValid && firstname.isValid && lastname.isValid && password.isValid && confirmation.isValid){
-            registerUser({
-                email: email.value,
-                firstname: firstname.value,
-                lastname: lastname.value,
-                password: password.value
-            }).then((user) => alert(firstname.value));
-        }
+        this.props.registerProps(
+            this.state.firstname,
+            this.state.lastname,
+            this.state.email,
+            this.state.password
+        )
     }
 
 
     render(){
         const { email, firstname, lastname, password, confirmation } = this.state;
         return (
-            <Container maxWidth="sm">
+            <Container maxWidth='sm'>
                 <form onSubmit={this.handleSubmit}>
-                    <Box style={{margin: "2rem 0"}}>
+                    <Box style={{margin: '2rem 0'}}>
                         <IdentitySection
                             email={email}
                             firstname={firstname}
@@ -89,7 +97,7 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
                             handleChange={this.handleChange}
                         />
                     </Box>
-                    <Box style={{margin: "2rem 0"}}>
+                    <Box style={{margin: '2rem 0'}}>
                         <CredentialSection
                             password={password}
                             confirmation={confirmation}
@@ -97,13 +105,13 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
                             required
                         />
                     </Box>
-                    <Box style={{margin: "2rem 0"}}>
-                        <Grid container justify="flex-end">
+                    <Box style={{margin: '2rem 0'}}>
+                        <Grid container justify='flex-end'>
                             <Grid item xs={4}>
                                 <Button
-                                    type="submit"
-                                    color="primary"
-                                    variant="contained"
+                                    type='submit'
+                                    color='primary'
+                                    variant='contained'
                                 >
                                     Register
                                 </Button>
@@ -115,3 +123,13 @@ export default class RegisterForm extends Component<{}, RegisterFormState> {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch: any) => ({
+    registerProps: ( firstname: IFormField<string>,
+                     lastname: IFormField<string>,
+                     email: IFormField<string>,
+                     password: IPasswordField
+    ) => { dispatch(registerUser(firstname.value, lastname.value, email.value, password.value)) },
+})
+
+export default connect(null, mapDispatchToProps)(RegisterForm);
