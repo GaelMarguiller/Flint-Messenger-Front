@@ -4,11 +4,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 export function ProfileButton() {
-    return (
-        <Link to="/profile">
-            <IconButton aria-label="profile">
-                <AccountCircle fontSize="large" />
-            </IconButton>
-        </Link>
-    )
+  return (
+    <Link to="/profile">
+      <IconButton aria-label="profile">
+        <AccountCircle fontSize="large" />
+      </IconButton>
+    </Link>
+  )
 }

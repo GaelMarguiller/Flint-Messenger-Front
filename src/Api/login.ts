@@ -14,7 +14,7 @@ import {UsersAction} from '../Users/usersTypes';
 export function login(email: string, password: string): (dispatch: Dispatch<LoginAction>) => Promise<void> {
     return dispatch => {
         dispatch(requestLogin())
-        return axios.post('http://localhost:3002/api/login/',
+        return axios.post('http://localhost:3002/Api/login/',
             {
                 username: email,
                 password: password
@@ -40,7 +40,7 @@ export function registerUser(
     return dispatch => {
         dispatch(requestCreateUser())
         return axios.post(
-            'http://localhost:3002/api/users',
+            'http://localhost:3002/Api/users',
             {firstname, lastname, email, password}
         ).then(response => {
             console.log(response.data)

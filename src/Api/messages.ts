@@ -1,9 +1,9 @@
-import axios from 'axios';
-import { IConversation, IConversationMessage } from '../Chat/chatTypes';
+import axios from "axios";
+import { IConversation, IConversationMessage } from "../Chat/chatTypes";
 
 export async function getConversations(): Promise<IConversation[]>{
     // axios vers le back pour récuperer les messages
-    const res = await axios.get('http://localhost:3002/api/messages', { withCredentials: true });
+    const res = await axios.get('http://localhost:3000/api/messages', { withCredentials: true });
     const messages : IConversationMessage[] = res.data;
 
     // processus de transformation des messages -> une liste de conversations
@@ -16,8 +16,6 @@ export async function getConversations(): Promise<IConversation[]>{
     const accInit : { [conversationId: string]: IConversationMessage[] } = {};// todo;
     const batches = messages.reduce(
         (acc, message) => {
-            // Regarder le conversationId
-            // Mettre le message au bon endroit dans l'accumulateur
             const convId = message.conversationId;
             if(acc[convId] === undefined){
                 acc[convId] = [ message ]
@@ -29,51 +27,18 @@ export async function getConversations(): Promise<IConversation[]>{
         accInit
     );
 
-    // messages.reduce(
-    //   (acc, message) => {
-    //     // Regarder le conversationId
-    //     // Mettre le message au bon endroit dans l'accumulateur
-    //     const convId = message.conversationId;
-    //     const newAcc = { ...acc }
-    //     if(acc[convId] === undefined){
-    //       newAcc[convId] = [ message ]
-    //     } else {
-    //       newAcc[convId] = [...newAcc[convId], message]
-    //     }
-    //     return newAcc;
-    //   },
-    //   accInit
-    // );
-
-    // { convId: [tous les messages de la conv 1], convId2: [tous les messages de la conv 2] }
-    // 2eme etape : Prendre chaque tableau créés précédemment pour créer un nouvel object IConversation (avec les attributs qu'il faut)
-
-    // { 123: [xxx], 12345: [xxx], 1234: [xxx] }
-
-    //// ----------- Fin 1ERE ETAPE ----------
-
-    // ---------------
-    // 2eme étape : Créer les types depuis la liste de messages, restructure
-    // { 123: [message, message2], 12345: [xxx], 1234: [xxx] } => [ conversation1, conversation2 ]
-
     const conversations : IConversation[] = [];
     for(const key in batches){
         const value = batches[key];
         // 123 => key
         // [message, message2] => value
-        const targetsNonDistincts = messages.flatMap(message => [message.emitter, ...message.targets]);
+        const targetsNonDistincts = value.flatMap(message => [message.emitter, ...message.targets]);
         const targets = [...new Set(targetsNonDistincts)];
+
         // message : [emitter, target1, target2]
         // message2: [emitter2, target3, target4]
         // [[emitter, target1, target2],[emitter2, target3, target4]] => [emitter, target1, target2, emitter2, target3, target4]
-        const sortedMessages = value.sort((message1, message2) => {
-            const date1 = message1.createdAt
-            const date2 = message2.createdAt
-
-            return date1 <= date2 ? 1 : -1;
-            //return date2.valueOf() - date1.valueOf();
-        })
-        const updatedAt = sortedMessages[0].createdAt
+        const updatedAt = messages.sort()[0].createdAt; // TODO completer sort
         conversations.push({
             _id: key,
             targets: targets,
@@ -82,5 +47,15 @@ export async function getConversations(): Promise<IConversation[]>{
             messages: value
         })
     }
+
     return conversations;
+}
+
+export async function sendMessage(content: string, conversationId: string, targets: string[]): Promise<IConversationMessage> {
+    const res = await axios.post(
+        'http://localhost:3000/api/messages',
+        { content, conversationId, targets },
+        { withCredentials: true }
+    );
+    return res.data;
 }

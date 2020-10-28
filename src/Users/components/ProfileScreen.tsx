@@ -1,26 +1,23 @@
-import React, {Component} from 'react';
-
-import {Box, Button, Container, Grid} from '@material-ui/core';
-import IdentitySection from '../../Login/components/IdentitySection';
+import {Container, Box, Button, Grid} from '@material-ui/core';
+import React from 'react';
+import {getConnectedUser} from '../../Api/users';
 import CredentialSection from '../../Login/components/CredentialSection';
-
-import {IFormField, IPasswordField, RegisterFormKey} from '../../Login/loginTypes';
+import IdentitySection from '../../Login/components/IdentitySection';
+import {IFormField, IPasswordField, RegisterFormKey} from '../../Login/types';
 import {
-    defaultPasswordFormField,
-    defaultStringFormField,
     validateConfirmationField,
     validateEmailField,
     validateNameField,
-    validatePasswordField
-} from '../../Login/utils/validateForm';
-import {getUpdateUser, getUser} from '../../Api/users';
-import {getConversations} from '../../Api/messages';
-import {IAppState} from '../../appReducer';
-import {connect} from 'react-redux';
-import {IUser} from '../usersTypes';
-import {getUserError} from '../actions/usersActions';
+    validatePasswordField,
+    defaultStringFormField,
+    defaultPasswordFormField
 
-interface IProfileScreenState {
+} from '../../Login/utils/validateForm';
+import {Loading} from '../../Layout/component/Loading';
+import {ErrorScreen} from '../../Layout/component/ErrorScreen';
+
+interface RegisterFormState {
+    status: 'error' | 'success' | 'unavailable'
     email: IFormField<string>;
     firstname: IFormField<string>;
     lastname: IFormField<string>;
@@ -28,36 +25,25 @@ interface IProfileScreenState {
     confirmation: IFormField<string>;
 }
 
-export interface IProfileScreenProps {
-    userId: string;
-    getUpdateUserProps: (
-        id: string,
-        firstname: IFormField<string>,
-        lastname: IFormField<string>,
-        email: IFormField<string>,
-        password: IPasswordField,
-    ) => void;
-    getUserProps: (userId: string) => Promise<IUser>;
-}
-
-class ProfileScreen extends Component<IProfileScreenProps, IProfileScreenState> {
-    constructor(props: IProfileScreenProps) {
+class ProfileScreen extends React.Component<{}, RegisterFormState> {
+    constructor(props: {}) {
         super(props);
-
         this.state = {
+            status: 'unavailable',
+            email: defaultStringFormField(),
             firstname: defaultStringFormField(),
             lastname: defaultStringFormField(),
-            email: defaultStringFormField(),
             password: defaultPasswordFormField(),
             confirmation: defaultStringFormField()
         }
     }
 
-    componentDidMount(){
-       this.props.getUserProps(this.props.userId)
+    componentDidMount() {
+        getConnectedUser()
             .then(user => {
                 this.setState({
-                    email:{
+                    status: 'success',
+                    email: {
                         ...this.state.email,
                         value: user.email
                     },
@@ -72,10 +58,13 @@ class ProfileScreen extends Component<IProfileScreenProps, IProfileScreenState> 
                 })
             })
             .catch(err => {
-                getUserError(err)
+                this.setState({
+                    status: 'error'
+                })
             })
     }
 
+    // TODO Est-ce que le password est required ?
     handleChange = (field: RegisterFormKey, newValue: string) => {
         const newState = {
             ...this.state,
@@ -101,69 +90,58 @@ class ProfileScreen extends Component<IProfileScreenProps, IProfileScreenState> 
         this.setState(newState);
     }
 
+    // TODO Mettre à jour avec le patch
     handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        this.props.getUpdateUserProps(
-            this.props.userId,
-            this.state.firstname,
-            this.state.lastname,
-            this.state.email,
-            this.state.password
-        )
+
+        const {email, firstname, lastname, password, confirmation} = this.state
+        if (email.isValid && firstname.isValid && lastname.isValid && password.isValid && confirmation.isValid) {
+            //register(...this.state).then((user) => alert(user.firstname));
+        }
     }
 
+
     render() {
-        getConversations().then(conversation => console.log(conversation))
-        const {email, firstname, lastname, password, confirmation} = this.state;
-        return <Container maxWidth='sm'>
-            <form onSubmit={this.handleSubmit}>
-                <Box style={{margin: '2rem 0'}}>
-                    <IdentitySection
-                        email={email}
-                        firstname={firstname}
-                        lastname={lastname}
-                        handleChange={this.handleChange}
-                    />
-                </Box>
-                <Box style={{margin: '2rem 0'}}>
-                    <CredentialSection
-                        password={password}
-                        confirmation={confirmation}
-                        handleChange={this.handleChange}
-                        required
-                    />
-                </Box>
-                <Box style={{margin: '2rem 0'}}>
-                    <Grid container justify='flex-end'>
-                        <Grid item xs={4}>
-                            <Button
-                                type='submit'
-                                color='primary'
-                                variant='contained'
-                            >
-                                Update Profile
-                            </Button>
+        const {email, firstname, lastname, password, confirmation, status} = this.state;
+        if (status === "error") {
+            return <ErrorScreen errorMessage='Sorry, you need to be connected to access this page'/>
+        } else if (status === "unavailable") {
+            return <Loading/>
+        } else {
+            return <Container maxWidth="sm">
+                <form>
+                    <Box style={{margin: "2rem 0"}}>
+                        <IdentitySection
+                            email={email}
+                            firstname={firstname}
+                            lastname={lastname}
+                            handleChange={this.handleChange}
+                        />
+                    </Box>
+                    <Box style={{margin: "2rem 0"}}>
+                        <CredentialSection
+                            password={password}
+                            confirmation={confirmation}
+                            handleChange={this.handleChange}
+                        />
+                    </Box>
+                    <Box style={{margin: "2rem 0"}}>
+                        <Grid container justify="flex-end">
+                            <Grid item xs={4}>
+                                <Button
+                                    type="submit"
+                                    color="primary"
+                                    variant="contained"
+                                >
+                                    Update Profile
+                                </Button>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </Box>
-            </form>
-        </Container>
+                    </Box>
+                </form>
+            </Container>
+        }
     }
 }
 
-const mapStateToProps = (state: IAppState) => ({
-    userId: state.login.userId,
-})
-
-const mapDispatchToProps = (dispatch: any) => ({
-    getUserProps: (userId:string) => {dispatch(getUser(userId))},
-    getUpdateUserProps: (id: string,
-                         firstname: IFormField<string>,
-                         lastname: IFormField<string>,
-                         email: IFormField<string>,
-                         password: IPasswordField
-    ) => { dispatch(getUpdateUser(id, firstname.value, lastname.value, email.value, password.value))}
-})
-
-// @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
+export default ProfileScreen;

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ListItem} from '@material-ui/core';
+import {ListItem, ListItemText} from '@material-ui/core';
 
 import {IConversation} from '../chatTypes';
 import {Link} from "react-router-dom";
@@ -12,10 +12,16 @@ export default class ConversationsListItem extends Component<ConversationsListIt
     render() {
         const conversations = this.props.conversation;
         return (
-            <ListItem>
-                <Link to={`/chat/${conversations._id}`}>
-                    {conversations._id}
-                </Link>
+            <ListItem
+                divider
+                button
+                component={Link}
+                to={`/chat/${conversations._id}`}
+                key={conversations._id}>
+                <ListItemText
+                    primary={conversations._id}
+                    secondary={conversations.messages[0].content}
+                />
             </ListItem>
         )
     }

@@ -1,42 +1,46 @@
-import React, { Component, Fragment } from 'react';
-import { AppBar, Tabs, Tab } from '@material-ui/core';
+import { Tabs, Tab, Container } from '@material-ui/core';
+import React from 'react';
 import LoginForm from './LoginForm';
 import RegisterForm from './RegisterForm';
 import TabPanel from './TabPanel';
 
 interface LoginScreenState{
-    selectedTab: number;
+  selectedTab: number;
 }
 
-export default class LoginScreen extends Component<{}, LoginScreenState> {
-    constructor(props: {}){
-        super(props);
+class LoginScreen extends React.Component<{}, LoginScreenState> {
+  constructor(props: {}){
+    super(props);
 
-        this.state = {
-            selectedTab: 0
-        }
+    this.state = {
+      selectedTab: 0
     }
+  }
 
-    handleChange = (_: React.ChangeEvent<{}>, newTab: number) => {
-        this.setState({selectedTab: newTab})
-    }
+  handleChange = (_: React.ChangeEvent<{}>, newTab: number) => {
+    this.setState({selectedTab: newTab})
+  }
 
-    render(){
-        const selectedTab = this.state.selectedTab;
-        return (
-            <Fragment>
-                <AppBar position="static">
-                    <Tabs value={selectedTab} onChange={this.handleChange} aria-label="simple tabs example">
-                        <Tab label="Login" />
-                        <Tab label="Register" />
-                    </Tabs>
-                </AppBar>
-                <TabPanel value={selectedTab} index={0}>
-                    <LoginForm />
-                </TabPanel>
-                <TabPanel value={selectedTab} index={1}>
-                    <RegisterForm />
-                </TabPanel>
-            </Fragment>)
-    }
+  render(){
+    const selectedTab = this.state.selectedTab;
+    return (
+    <Container maxWidth="lg" style={{marginTop: '2rem'}} >
+      <Tabs
+        value={selectedTab}
+        onChange={this.handleChange}
+        variant="fullWidth"
+      >
+        <Tab label="Login" />
+        <Tab label="Register" />
+      </Tabs>
+      <TabPanel value={selectedTab} index={0}>
+        <LoginForm />
+      </TabPanel>
+      <TabPanel value={selectedTab} index={1}>
+        <RegisterForm />
+      </TabPanel>
+    </Container>)
+  }
 }
+
+export default LoginScreen;

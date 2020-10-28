@@ -1,7 +1,7 @@
-import React from "react";
-import {IConversationMessage} from "../chatTypes";
+import React from 'react';
+import { IConversationMessage } from "../chatTypes";
 
-export default function ChatListMessageItem({message} : {message:IConversationMessage}) {
+export function ChatMessage({message} : {message:IConversationMessage}){
     return (
         <h5>Message: {message.content}</h5>
     )

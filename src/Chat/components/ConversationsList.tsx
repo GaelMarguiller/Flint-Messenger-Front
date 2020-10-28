@@ -1,39 +1,44 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+import {List} from '@material-ui/core';
 
 import { IConversation } from '../chatTypes';
+import {getConversations} from '../../Api/messages';
+import ConversationsListItem from './ConversationsListItem';
 
-import {getConversations} from "../../Api/messages";
-import ConversationsListItem from "./ConversationsListItem";
-import {List} from "@material-ui/core";
+import {IAppState} from '../../appReducer';
 
-interface ConversationsListState {
-    conversations: IConversation[];
+export interface IConversationsListProps {
+    list: IConversation[]
+    getConversationsListProps: () => void;
 }
-export default class ConversationsList extends Component<{}, ConversationsListState>{
-    constructor(props: {}){
-        super(props);
-        this.state = {
-            conversations: []
-        }
-    }
 
+class ConversationsList extends Component<IConversationsListProps>{
     componentDidMount(){
-        getConversations().then(conversations => {
-            this.setState({
-                conversations: conversations
-            })
-        })
+        this.props.getConversationsListProps()
     }
     render(){
-        if(this.state.conversations.length === 0){
+        if(this.props.list.length === 0){
             return <h1>Loading</h1>
         } else {
            return <List>
-               { this.state.conversations.map((conversations, index) =>
-                   <ConversationsListItem key={index} conversation={conversations} />
+               { this.props.list.map((conversation, index) =>
+                   <ConversationsListItem key={index} conversation={conversation} />
                    )
                }
             </List>
         }
     }
 }
+
+const mapStateToProps = (state: IAppState) => ({
+    list: state.conversations.list
+})
+
+
+const mapDispatchToProps = (dispatch: any) => ({
+    getConversationsListProps: () => { dispatch(getConversations()) }
+})
+
+// @ts-ignore
+export default connect(mapStateToProps, mapDispatchToProps)(ConversationsList)

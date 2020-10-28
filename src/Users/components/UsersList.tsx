@@ -1,41 +1,27 @@
-import React, { Component } from 'react';
-import {connect} from "react-redux";
-
+import { List } from '@material-ui/core';
+import { connect } from 'react-redux';
+import React from 'react';
+import { IAppState } from '../../appReducer';
+import { IUser } from '../usersTypes';
 import UsersListItem from './UsersListItem';
 
-import { IUser } from '../usersTypes';
-
-import { getUsers } from '../../Api/users';
-import {IAppState} from "../../appReducer";
-
-
-
-export interface IUserListProps {
-    list: IUser[]
-    getUsersListProps: () => void;
+interface UsersListProps {
+  users: IUser[];
 }
 
-class UsersList extends Component<IUserListProps>{
-    componentDidMount(){
-        this.props.getUsersListProps()
+class UsersList extends React.Component<UsersListProps>{
+  render(){
+    if(this.props.users.length === 0){
+      return <h1>Loading</h1>
+    } else {
+      return <List>
+        {this.props.users.map((user, index) => <UsersListItem key={index} user={user} />)}
+      </List>
     }
-
-    render(){
-        if(this.props.list.length === 0){
-            return <h1>Loading</h1>
-        } else {
-            return this.props.list.map((user, index) => <UsersListItem key={index} user={user} />);
-        }
-    }
+  }
 }
 
-const mapStateToProps = (state: IAppState) => ({
-    list: state.users.list
+const mapStateToProps = ({users} : IAppState) => ({
+  users: users.list
 })
-
-
-const mapDispatchToProps = (dispatch: any) => ({
-    getUsersListProps: () => { dispatch(getUsers()) }
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(UsersList)
+export default connect(mapStateToProps)(UsersList);
