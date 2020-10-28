@@ -1,28 +1,20 @@
-import React, {Component} from 'react';
-import {ListItem, ListItemText} from '@material-ui/core';
+import { ListItem, ListItemText } from '@material-ui/core';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { IConversation } from '../chatTypes';
 
-import {IConversation} from '../chatTypes';
-import {Link} from "react-router-dom";
-
-interface ConversationsListItemProps {
-    conversation: IConversation;
-}
-
-export default class ConversationsListItem extends Component<ConversationsListItemProps> {
-    render() {
-        const conversations = this.props.conversation;
-        return (
-            <ListItem
-                divider
-                button
-                component={Link}
-                to={`/chat/${conversations._id}`}
-                key={conversations._id}>
-                <ListItemText
-                    primary={conversations._id}
-                    secondary={conversations.messages[0].content}
-                />
-            </ListItem>
-        )
-    }
+export function ConversationsListItem({conversation} : {conversation: IConversation}){
+    return (
+        <ListItem
+            divider
+            button
+            component={Link}
+            to={`/conversation/${conversation._id}`}
+            key={conversation._id}>
+            <ListItemText
+                primary={conversation._id}
+                secondary={conversation.messages[0].content}
+            />
+        </ListItem>
+    )
 }

@@ -48,18 +48,18 @@ class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
     render(){
         return (
             <form onSubmit={(e) => this.handleSubmit(e)}>
-                <Grid container spacing={1} alignItems="center" justify="space-between">
+                <Grid container spacing={1} alignItems='center' justify='space-between'>
                     <Grid item xs={9}>
                         <TextField
                             fullWidth={true}
-                            variant="outlined"
-                            placeholder="Type your message here"
+                            variant='outlined'
+                            placeholder='Type your message here'
                             value={this.state.messageInput}
                             onChange={(e) => this.handleChange(e.target.value)}
                         />
                     </Grid>
                     <Grid item xs={2}>
-                        <Button type="submit" variant="contained" color="primary">Envoyer</Button>
+                        <Button type='submit' variant='contained' color='primary'>Envoyer</Button>
                     </Grid>
                 </Grid>
             </form>

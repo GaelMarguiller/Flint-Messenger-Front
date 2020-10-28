@@ -1,5 +1,5 @@
-import { getConnectedUser } from "../../Api/users";
-import { updateConnectedUser } from "./updateConnectedUser";
+import { getConnectedUser } from '../../Api/users';
+import { updateConnectedUser } from './updateConnectedUser';
 
 export function makeFetchConnectedUser() {
   return async (dispatch: any) => {

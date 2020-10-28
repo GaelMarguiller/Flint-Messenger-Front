@@ -1,4 +1,4 @@
-import { IConversationsAction, IConversationsState, UPDATE_CONVERSATION, UPDATE_CONVERSATION_LIST, UPDATE_POLLING_TIMER } from "../chatTypes"
+import { IConversationsAction, IConversationsState, UPDATE_CONVERSATION, UPDATE_CONVERSATION_LIST, UPDATE_POLLING_TIMER } from '../chatTypes'
 
 export function conversationsReducer(state: IConversationsState = defaultConversationsState(), action: IConversationsAction): IConversationsState{
   switch(action.type){

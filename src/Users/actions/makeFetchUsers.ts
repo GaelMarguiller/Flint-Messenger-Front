@@ -1,5 +1,5 @@
-import { getUsers } from "../../Api/users";
-import { updateUsers } from "./updateUsers";
+import { getUsers } from '../../Api/users';
+import { updateUsers } from './updateUsers';
 
 export function makeFetchUsers() {
   return async (dispatch: any) => {

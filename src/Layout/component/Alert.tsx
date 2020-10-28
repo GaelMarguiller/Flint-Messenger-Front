@@ -9,7 +9,7 @@ export interface IAlertProps {
 
 export function Alert({ status, error, success }: IAlertProps) {
   error = error || 'Something really bad happened...';
-  if (status === 'error') return <LabAlert severity="error">{error}</LabAlert>;
-  if (status === 'success' && success) return <LabAlert severity="success">{success}</LabAlert>;
+  if (status === 'error') return <LabAlert severity='error'>{error}</LabAlert>;
+  if (status === 'success' && success) return <LabAlert severity='success'>{success}</LabAlert>;
   return null;
 }

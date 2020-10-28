@@ -4,7 +4,7 @@ import React from 'react';
 
 export function Loading() {
   return (
-    <Grid style={{ height: '50vh' }} container direction="column" justify="center" alignItems="center">
+    <Grid style={{ height: '50vh' }} container direction='column' justify='center' alignItems='center'>
       <Grid item>
         <CircularProgress />
       </Grid>

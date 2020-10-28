@@ -2,7 +2,7 @@ import {Container, Box, Button, Grid} from '@material-ui/core';
 import React from 'react';
 import {register} from '../../Api/users';
 import {Alert} from '../../Layout/component/Alert';
-import {IFormField, IPasswordField, RegisterFormKey} from '../types';
+import {IFormField, IPasswordField, RegisterFormKey} from '../loginTypes';
 import {
     validateConfirmationField,
     defaultStringFormField,
@@ -79,16 +79,16 @@ class RegisterForm extends React.Component<{}, RegisterFormState> {
     render() {
         const {status, email, firstname, lastname, password, confirmation} = this.state;
         return (
-            <Container maxWidth="sm">
+            <Container maxWidth='sm'>
                 <Box style={{margin: '2rem 0'}}>
                     <Alert
                         status={status}
-                        error="Something happened !"
+                        error='Something happened !'
                         success={`You're registered ${firstname.value}! Please login`}
                     />
                 </Box>
                 <form onSubmit={this.handleSubmit}>
-                    <Box style={{margin: "2rem 0"}}>
+                    <Box style={{margin: '2rem 0'}}>
                         <IdentitySection
                             email={email}
                             firstname={firstname}
@@ -96,20 +96,20 @@ class RegisterForm extends React.Component<{}, RegisterFormState> {
                             handleChange={this.handleChange}
                         />
                     </Box>
-                    <Box style={{margin: "2rem 0"}}>
+                    <Box style={{margin: '2rem 0'}}>
                         <CredentialSection
                             password={password}
                             confirmation={confirmation}
                             handleChange={this.handleChange}
                         />
                     </Box>
-                    <Box style={{margin: "2rem 0"}}>
-                        <Grid container justify="flex-end">
+                    <Box style={{margin: '2rem 0'}}>
+                        <Grid container justify='flex-end'>
                             <Grid item xs={4}>
                                 <Button
-                                    type="submit"
-                                    color="primary"
-                                    variant="contained"
+                                    type='submit'
+                                    color='primary'
+                                    variant='contained'
                                 >
                                     Register
                                 </Button>

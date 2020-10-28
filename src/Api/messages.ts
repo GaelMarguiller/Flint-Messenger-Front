@@ -1,9 +1,9 @@
-import axios from "axios";
-import { IConversation, IConversationMessage } from "../Chat/chatTypes";
+import axios from 'axios';
+import { IConversation, IConversationMessage } from '../Chat/chatTypes';
 
 export async function getConversations(): Promise<IConversation[]>{
     // axios vers le back pour récuperer les messages
-    const res = await axios.get('http://localhost:3000/api/messages', { withCredentials: true });
+    const res = await axios.get('http://localhost:3003/api/messages', { withCredentials: true });
     const messages : IConversationMessage[] = res.data;
 
     // processus de transformation des messages -> une liste de conversations
@@ -47,13 +47,13 @@ export async function getConversations(): Promise<IConversation[]>{
             messages: value
         })
     }
-
+    console.log(conversations);
     return conversations;
 }
 
 export async function sendMessage(content: string, conversationId: string, targets: string[]): Promise<IConversationMessage> {
     const res = await axios.post(
-        'http://localhost:3000/api/messages',
+        'http://localhost:3003/api/messages',
         { content, conversationId, targets },
         { withCredentials: true }
     );

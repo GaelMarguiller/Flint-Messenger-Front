@@ -3,7 +3,7 @@ import React from 'react';
 import {getConnectedUser} from '../../Api/users';
 import CredentialSection from '../../Login/components/CredentialSection';
 import IdentitySection from '../../Login/components/IdentitySection';
-import {IFormField, IPasswordField, RegisterFormKey} from '../../Login/types';
+import {IFormField, IPasswordField, RegisterFormKey} from '../../Login/loginTypes';
 import {
     validateConfirmationField,
     validateEmailField,
@@ -103,14 +103,14 @@ class ProfileScreen extends React.Component<{}, RegisterFormState> {
 
     render() {
         const {email, firstname, lastname, password, confirmation, status} = this.state;
-        if (status === "error") {
+        if (status === 'error') {
             return <ErrorScreen errorMessage='Sorry, you need to be connected to access this page'/>
-        } else if (status === "unavailable") {
+        } else if (status === 'unavailable') {
             return <Loading/>
         } else {
-            return <Container maxWidth="sm">
+            return <Container maxWidth='sm'>
                 <form>
-                    <Box style={{margin: "2rem 0"}}>
+                    <Box style={{margin: '2rem 0'}}>
                         <IdentitySection
                             email={email}
                             firstname={firstname}
@@ -118,20 +118,20 @@ class ProfileScreen extends React.Component<{}, RegisterFormState> {
                             handleChange={this.handleChange}
                         />
                     </Box>
-                    <Box style={{margin: "2rem 0"}}>
+                    <Box style={{margin: '2rem 0'}}>
                         <CredentialSection
                             password={password}
                             confirmation={confirmation}
                             handleChange={this.handleChange}
                         />
                     </Box>
-                    <Box style={{margin: "2rem 0"}}>
-                        <Grid container justify="flex-end">
+                    <Box style={{margin: '2rem 0'}}>
+                        <Grid container justify='flex-end'>
                             <Grid item xs={4}>
                                 <Button
-                                    type="submit"
-                                    color="primary"
-                                    variant="contained"
+                                    type='submit'
+                                    color='primary'
+                                    variant='contained'
                                 >
                                     Update Profile
                                 </Button>

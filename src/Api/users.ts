@@ -1,23 +1,24 @@
-import axios from "axios"
-import { IUser } from "../Users/usersTypes";
+import axios from 'axios'
+import { IUser } from '../Users/usersTypes';
 
 export function getUsers(): Promise<IUser[]> {
-    return axios.get('http://localhost:3002/api/users/').then(res => res.data);
+    return axios.get('http://localhost:3003/api/users/').then(res => res.data);
 }
 
 export function getConnectedUser(): Promise<IUser>{
     return axios.get(
-        'http://localhost:3002/api/users/me',
+        'http://localhost:3003/api/users/me',
         { withCredentials: true }
     ).then(res => res.data);
 }
 
 export function login(email: string, password: string): Promise<IUser>{
     return axios.post(
-        'http://localhost:3002/api/login/',
+        'http://localhost:3003/api/login/',
         {
             username: email,
-            password: password
+            password: password,
+            status: 'online',
         },
         {
             withCredentials: true
@@ -27,7 +28,7 @@ export function login(email: string, password: string): Promise<IUser>{
 
 export function register(email: string, firstname: string, lastname: string, password: string): Promise<IUser>{
     return axios.post(
-        'http://localhost:3002/api/users/',
+        'http://localhost:3003/api/users/',
         { email, firstname, lastname, password },
         {
             withCredentials: true
@@ -37,7 +38,7 @@ export function register(email: string, firstname: string, lastname: string, pas
 
 export function patchConversationSeen(conversationId: string){
     return axios.patch(
-        'http://localhost:3002/api/users/conversation-seen',
+        'http://localhost:3003/api/users/conversation-seen',
         { conversationId },
         {
             withCredentials: true

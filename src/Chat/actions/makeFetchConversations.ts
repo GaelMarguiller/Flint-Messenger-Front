@@ -1,6 +1,6 @@
-import { getConversations } from "../../Api/messages"
-import { IAppState } from "../../appReducer";
-import { updateConversationList } from "./updateConversationList"
+import { getConversations } from '../../Api/messages'
+import { IAppState } from '../../appReducer';
+import { updateConversationList } from './updateConversationList'
 
 export function makeFetchConversations(){
   return async (dispatch: any, getState: () => IAppState) => {

@@ -1,4 +1,4 @@
-import { IUsersAction, IUsersState, UPDATE_CONNECTED_USER, UPDATE_USERS } from "../usersTypes";
+import { IUsersAction, IUsersState, UPDATE_CONNECTED_USER, UPDATE_USERS } from '../usersTypes';
 
 export function usersReducer(state: IUsersState = defaultUsersState(), action: IUsersAction): IUsersState {
     switch(action.type){

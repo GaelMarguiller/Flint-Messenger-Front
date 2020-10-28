@@ -11,11 +11,11 @@ export interface IPasswordRequirementProps {
 
 export function PasswordRequirement({ check, message }: IPasswordRequirementProps) {
   return (
-    <Grid container item alignItems="center" style={{ fontSize: 'small' }}>
+    <Grid container item alignItems='center' style={{ fontSize: 'small' }}>
       {check ? (
-        <CheckCircle color="primary" />
+        <CheckCircle color='primary' />
       ) : (
-        <RadioButtonUnchecked color="primary" />
+        <RadioButtonUnchecked color='primary' />
       )}
       <Typography style={{ fontSize: 'inherit' }}> {message}</Typography>
     </Grid>

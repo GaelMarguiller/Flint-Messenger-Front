@@ -1,5 +1,5 @@
 import React from 'react';
-import { IConversationMessage } from "../chatTypes";
+import { IConversationMessage } from '../chatTypes';
 
 export function ChatMessage({message} : {message:IConversationMessage}){
     return (

@@ -1,44 +1,28 @@
-import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import {List} from '@material-ui/core';
-
+import { List } from '@material-ui/core';
+import React from 'react';
+import { connect } from 'react-redux';
+import { IAppState } from '../../appReducer';
 import { IConversation } from '../chatTypes';
-import {getConversations} from '../../Api/messages';
-import ConversationsListItem from './ConversationsListItem';
+import { ConversationsListItem } from './ConversationsListItem';
 
-import {IAppState} from '../../appReducer';
-
-export interface IConversationsListProps {
-    list: IConversation[]
-    getConversationsListProps: () => void;
+interface ConversationsListProps {
+    conversations: IConversation[];
 }
 
-class ConversationsList extends Component<IConversationsListProps>{
-    componentDidMount(){
-        this.props.getConversationsListProps()
-    }
+class ConversationsList extends React.Component<ConversationsListProps>{
     render(){
-        if(this.props.list.length === 0){
+        if(this.props.conversations.length === 0){
             return <h1>Loading</h1>
         } else {
-           return <List>
-               { this.props.list.map((conversation, index) =>
-                   <ConversationsListItem key={index} conversation={conversation} />
-                   )
-               }
+            return <List>
+                {this.props.conversations.map((conversation, index) => <ConversationsListItem key={index} conversation={conversation} />)}
             </List>
         }
     }
 }
 
-const mapStateToProps = (state: IAppState) => ({
-    list: state.conversations.list
+const mapStateToProps = ({conversations}: IAppState) => ({
+    conversations: conversations.list
 })
 
-
-const mapDispatchToProps = (dispatch: any) => ({
-    getConversationsListProps: () => { dispatch(getConversations()) }
-})
-
-// @ts-ignore
-export default connect(mapStateToProps, mapDispatchToProps)(ConversationsList)
+export default connect(mapStateToProps)(ConversationsList);

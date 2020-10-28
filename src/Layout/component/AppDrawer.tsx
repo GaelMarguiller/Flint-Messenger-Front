@@ -38,17 +38,17 @@ function AppDrawer({ open, closeDrawer, content }: DrawerProps){
   const classes = useStyles();
 
   let contentComponent: any;
-  if(content === "users"){
+  if(content === 'users'){
     contentComponent = <UsersList />
-  } else if (content === "conversations") {
+  } else if (content === 'conversations') {
     contentComponent = <ConversationsList />
   } else {
-    contentComponent = <Alert status='error' error="Drawer content invalid"/>
+    contentComponent = <Alert status='error' error='Drawer content invalid'/>
   }
   return (
     <Drawer
-      variant="persistent"
-      anchor="left"
+      variant='persistent'
+      anchor='left'
       open={open}
       onClose={closeDrawer}
       classes={{

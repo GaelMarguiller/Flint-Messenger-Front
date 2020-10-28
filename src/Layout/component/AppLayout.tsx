@@ -57,7 +57,7 @@ class AppLayout extends React.Component<AppLayoutProps, AppLayoutState> {
     const contentClasses = [
       this.props.classes.content,
       this.state.drawerOpened && this.props.classes.contentShift
-    ].join(" ");
+    ].join(' ');
     return (
       <Fragment>
         <div className={contentClasses}>

@@ -13,9 +13,9 @@ interface ConversationsButtonProps {
 
 function ConversationsButton({ toggleDrawer, unseenMessage }: ConversationsButtonProps) {
   return (
-    <Badge badgeContent={unseenMessage} color="secondary">
-      <IconButton aria-label="contacts" onClick={e => toggleDrawer("conversations")}>
-        <Forum fontSize="large" />
+    <Badge badgeContent={unseenMessage} color='secondary'>
+      <IconButton aria-label='contacts' onClick={e => toggleDrawer('conversations')}>
+        <Forum fontSize='large' />
       </IconButton>
     </Badge>
   );

@@ -1,5 +1,5 @@
-import { patchConversationSeen } from "../../Api/users";
-import { updateConnectedUser } from "../../Users/actions/updateConnectedUser";
+import { patchConversationSeen } from '../../Api/users';
+import { updateConnectedUser } from '../../Users/actions/updateConnectedUser';
 
 export function makeUpdateConversationSeen(conversationId: string){
   return async (dispatch: any) => {

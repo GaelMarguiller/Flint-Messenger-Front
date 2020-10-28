@@ -1,4 +1,4 @@
-import { IConversation, IUpdateConversationListAction, UPDATE_CONVERSATION_LIST } from "../types";
+import { IConversation, IUpdateConversationListAction, UPDATE_CONVERSATION_LIST } from '../chatTypes';
 
 export function updateConversationList(conversations: IConversation[]): IUpdateConversationListAction {
   return {

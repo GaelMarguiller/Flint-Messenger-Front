@@ -1,4 +1,4 @@
-import { IUpdatePollingTimerAction, UPDATE_POLLING_TIMER } from "../types";
+import { IUpdatePollingTimerAction, UPDATE_POLLING_TIMER } from '../chatTypes';
 
 export function updatePollingTimer(timer: NodeJS.Timeout): IUpdatePollingTimerAction{
   return {

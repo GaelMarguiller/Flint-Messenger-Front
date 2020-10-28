@@ -14,12 +14,12 @@ interface AppMenuProps {
 
 function AppMenu({ toggleDrawer, firstname }: AppMenuProps){
     return (
-      <AppBar position="static" style={{ height: '10vh' }}>
-        <Grid container justify="space-between" alignItems="center" style={{ height: '100%' }}>
+      <AppBar position='static' style={{ height: '10vh' }}>
+        <Grid container justify='space-between' alignItems='center' style={{ height: '100%' }}>
           <Grid item>
             <Toolbar>
-              <Forum fontSize="large" />
-              <Typography variant="h3"> Enigma.</Typography>
+              <Forum fontSize='large' />
+              <Typography variant='h3'> Enigma.</Typography>
             </Toolbar>
           </Grid>
           <Grid item>

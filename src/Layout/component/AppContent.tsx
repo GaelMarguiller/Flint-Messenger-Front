@@ -11,11 +11,11 @@ class AppContent extends React.Component {
   render(){
     return (
       <Switch>
-        <Route path="/login" component={LoginScreen} />
-        <Route path="/users" component={UsersList} />
-        <Route path="/profile" component={ProfileScreen} />
-        <Route path="/conversation/:conversationID" component={ChatScreen} />
-        <Route exact path="/" component={HomeScreen} />
+        <Route path='/login' component={LoginScreen} />
+        <Route path='/users' component={UsersList} />
+        <Route path='/profile' component={ProfileScreen} />
+        <Route path='/conversation/:conversationID' component={ChatScreen} />
+        <Route exact path='/' component={HomeScreen} />
         <Route><ErrorScreen errorMessage='Oops ! It seems like we did not find this page!'/></Route>
       </Switch>
     )
