@@ -17,12 +17,10 @@ export interface IConversationMessage {
 
 export const UPDATE_CONVERSATION_LIST = 'UPDATE_CONVERSATION_LIST';
 export const UPDATE_CONVERSATION = 'UPDATE_CONVERSATION';
-export const UPDATE_POLLING_TIMER = 'UPDATE_POLLING_TIMER';
 
 export interface IConversationsState {
     list: IConversation[];
     totalUnseenMessages: number;
-    timer?: NodeJS.Timeout;
 }
 
 export interface IUpdateConversationListAction {
@@ -35,12 +33,7 @@ export interface IUpdateConversationAction {
     conversation: IConversation
 }
 
-export interface IUpdatePollingTimerAction {
-    type: typeof UPDATE_POLLING_TIMER,
-    timer: NodeJS.Timeout;
-}
 
 export type IConversationsAction =
     IUpdateConversationListAction
-    | IUpdateConversationAction
-    | IUpdatePollingTimerAction;
+    | IUpdateConversationAction;

@@ -5,19 +5,26 @@ import './App.css';
 import AppLayout from './Layout/component/AppLayout';
 import history from './history';
 import { blue, red } from '@material-ui/core/colors';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import store from './store';
+import { makeInitApp } from './Layout/actions/makeInitApp';
+import { ThunkDispatch } from 'redux-thunk';
+import { IAppState } from './appReducer';
+import { Action } from 'redux';
 
 const theme = createMuiTheme({
     palette: {
         primary: blue,
         secondary: {
-            main: '#000'
+            main: "#000"
         },
         error: red,
     },
-})
-export default function App() {
+});
+
+(store.dispatch as ThunkDispatch<IAppState, void, Action>)(makeInitApp());
+
+function App() {
     return (
         <Provider store={store}>
             <Router history={history}>
@@ -28,3 +35,5 @@ export default function App() {
         </Provider>
     );
 }
+
+export default App;

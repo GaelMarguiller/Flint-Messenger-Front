@@ -1,4 +1,4 @@
-import { IConversationsAction, IConversationsState, UPDATE_CONVERSATION, UPDATE_CONVERSATION_LIST, UPDATE_POLLING_TIMER } from '../chatTypes'
+import { IConversationsAction, IConversationsState, UPDATE_CONVERSATION, UPDATE_CONVERSATION_LIST } from '../chatTypes'
 
 export function conversationsReducer(state: IConversationsState = defaultConversationsState(), action: IConversationsAction): IConversationsState{
   switch(action.type){
@@ -16,11 +16,6 @@ export function conversationsReducer(state: IConversationsState = defaultConvers
           ...state.list.filter(conv => conv._id !== action.conversation._id),
           action.conversation
         ]
-      }
-    case UPDATE_POLLING_TIMER:
-      return {
-        ...state,
-        timer: action.timer
       }
     default:
       return state

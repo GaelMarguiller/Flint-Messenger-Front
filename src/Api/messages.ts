@@ -47,7 +47,6 @@ export async function getConversations(): Promise<IConversation[]>{
             messages: value
         })
     }
-    console.log(conversations);
     return conversations;
 }
 
