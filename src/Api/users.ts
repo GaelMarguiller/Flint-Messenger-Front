@@ -46,10 +46,3 @@ export function patchConversationSeen(conversationId: string){
         }
     ).then(res => res.data);
 }
-
-export default {
-    getUsers,
-    login,
-    register,
-    getConnectedUser
-}
