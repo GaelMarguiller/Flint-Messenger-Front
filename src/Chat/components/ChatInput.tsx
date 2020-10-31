@@ -1,9 +1,9 @@
-import { Button, Grid, TextField } from '@material-ui/core';
+import {Button, Grid, TextField} from '@material-ui/core';
 import React from 'react';
-import { connect } from 'react-redux';
-import { sendMessage } from '../../Api/messages';
-import { updateConversation } from '../actions/updateConversation';
-import { IConversation } from '../chatTypes';
+import {connect} from 'react-redux';
+import {sendMessage} from '../../Api/messages';
+import {updateConversation} from '../actions/updateConversation';
+import {IConversation} from '../chatTypes';
 
 interface ChatInputProps {
     conversation: IConversation;
@@ -15,9 +15,9 @@ interface ChatInputState {
 }
 
 class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
-    constructor(props: ChatInputProps){
+    constructor(props: ChatInputProps) {
         super(props);
-        this.state = { messageInput: '' }
+        this.state = {messageInput: ''}
     }
 
     handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +45,7 @@ class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
         })
     }
 
-    render(){
+    render() {
         return (
             <form onSubmit={(e) => this.handleSubmit(e)}>
                 <Grid container spacing={1} alignItems='center' justify='space-between'>
@@ -58,9 +58,6 @@ class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
                             onChange={(e) => this.handleChange(e.target.value)}
                         />
                     </Grid>
-                    <Grid item xs={2}>
-                        <Button type='submit' variant='contained' color='primary'>Envoyer</Button>
-                    </Grid>
                 </Grid>
             </form>
         )
@@ -68,6 +65,8 @@ class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
 }
 
 const mapDispatchToProps = (dispatch: any) => ({
-    updateConversation: (conversation: IConversation) => { dispatch(updateConversation(conversation))}
+    updateConversation: (conversation: IConversation) => {
+        dispatch(updateConversation(conversation))
+    }
 })
 export default connect(undefined, mapDispatchToProps)(ChatInput);

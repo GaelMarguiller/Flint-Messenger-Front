@@ -18,7 +18,7 @@ function ChatMessages({messages, conversationId, makeUpdateConversationSeen} : C
         () => {
             makeUpdateConversationSeen(conversationId)
         },
-        [messages, conversationId]
+        [messages.length]
     )
 
     return (

@@ -7,7 +7,10 @@ import { IUser } from '../../Users/usersTypes';
 
 export function makeStartSocket(){
     return (dispatch: any, getState: () => IAppState) => {
-        const socketServer = io.connect(`${process.env.REACT_APP_BACKEND}`);
+        const uri = process.env.NODE_ENV === 'production' && process.env.REACT_APP_API_URL
+                ? process.env.REACT_APP_API_URL
+                : 'http://localhost:3003';
+        const socketServer = io.connect(uri);
 
         socketServer.on('connect', () => {
             console.log('Je suis bien connecté au back');
