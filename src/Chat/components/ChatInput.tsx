@@ -1,5 +1,5 @@
-import {Button, Grid, TextField} from '@material-ui/core';
-import React from 'react';
+import {createStyles, Grid, makeStyles, TextField} from '@material-ui/core';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {sendMessage} from '../../Api/messages';
 import {updateConversation} from '../actions/updateConversation';
@@ -10,58 +10,53 @@ interface ChatInputProps {
     updateConversation: (conversation: IConversation) => void;
 }
 
-interface ChatInputState {
-    messageInput: string
-}
+const useStyles = makeStyles(() =>
+    createStyles({
+        inputChatText: {
+            display: 'flex',
+            width: '100%'
+        },
+    })
+)
 
-class ChatInput extends React.Component<ChatInputProps, ChatInputState> {
-    constructor(props: ChatInputProps) {
-        super(props);
-        this.state = {messageInput: ''}
-    }
+function ChatInput ({conversation, updateConversation}: ChatInputProps) {
+    const [messageInput, setMessageInput] = useState('')
+    const classes = useStyles();
 
-    handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         const sentMessage = await sendMessage(
-            this.state.messageInput,
-            this.props.conversation._id,
-            this.props.conversation.targets
+            messageInput,
+            conversation._id,
+            conversation.targets
         )
-        this.setState({
-            messageInput: ''
-        })
-
+        setMessageInput('')
         const newConversation = {
-            ...this.props.conversation,
-            messages: [...this.props.conversation.messages, sentMessage]
+            ...conversation,
+            messages: [...conversation.messages, sentMessage]
         };
-        this.props.updateConversation(newConversation);
+        updateConversation(newConversation);
     }
 
-    handleChange = (newMessage: string) => {
-        this.setState({
-            messageInput: newMessage
-        })
+    const handleChange = (newMessage: string) => {
+        setMessageInput(newMessage)
     }
-
-    render() {
-        return (
-            <form onSubmit={(e) => this.handleSubmit(e)}>
-                <Grid container spacing={1} alignItems='center' justify='space-between'>
-                    <Grid item xs={9}>
-                        <TextField
-                            fullWidth={true}
-                            variant='outlined'
-                            placeholder='Type your message here'
-                            value={this.state.messageInput}
-                            onChange={(e) => this.handleChange(e.target.value)}
-                        />
-                    </Grid>
+    return(
+        <form onSubmit={(e) => handleSubmit(e)}>
+            <Grid container spacing={1} alignItems='center' justify='space-between'>
+                <Grid item xs={12}>
+                    <TextField
+                        fullWidth={true}
+                        variant='outlined'
+                        placeholder='Type your message here'
+                        value={messageInput}
+                        onChange={(e) => handleChange(e.target.value)}
+                        className={classes.inputChatText}
+                    />
                 </Grid>
-            </form>
-        )
-    }
+            </Grid>
+        </form>
+    )
 }
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -36,7 +36,7 @@ class UsersListItem extends React.Component<UsersListItemProps> {
         const user = this.props.user;
         return (
             <Button onClick={(_e) => this.createConversation(user)}>
-                <UserDetails id={user._id} />
+                <UserDetails id={user._id} displayText={true} smallStyle={false}/>
             </Button>
         )
     }

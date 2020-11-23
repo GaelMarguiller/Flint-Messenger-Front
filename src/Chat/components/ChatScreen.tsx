@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React  from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { IAppState } from '../../appReducer';
@@ -7,6 +7,7 @@ import { IConversation } from '../chatTypes';
 import { AttendeesList } from './AttendeesList';
 import ChatInput from './ChatInput';
 import ChatMessages from './ChatListMessage';
+import {Box, createStyles, makeStyles} from "@material-ui/core";
 
 interface ChatScreenProps {
     match: any;
@@ -15,20 +16,30 @@ interface ChatScreenProps {
     conversation?: IConversation;
 }
 
-class ChatScreen extends React.Component<ChatScreenProps> {
-    render(){
-        const { conversation } = this.props;
-        if(!conversation) return <Loading />
+const useStyles = makeStyles(() =>
+    createStyles({
+        root: {
+            display: 'flex',
+            margin: '0 auto',
+            flexDirection: 'column',
+            width: '70vw',
+            height: '90vh',
+            overflow: 'hidden'
+        }
+    })
+)
 
-        return (
-            <Fragment>
-                <h1>Chat</h1>
-                <ChatMessages messages={conversation.messages} conversationId={conversation._id} />
-                <ChatInput conversation={conversation} />
-                <AttendeesList users={conversation.targets}/>
-            </Fragment>
-        )
-    }
+function ChatScreen({conversation} : ChatScreenProps){
+    const classes = useStyles();
+    if(!conversation) return <Loading />
+    return (
+        <Box className={classes.root}>
+            <h1>Chat</h1>
+            <ChatMessages messages={conversation.messages} conversationId={conversation._id}/>
+            <ChatInput conversation={conversation} />
+            <AttendeesList users={conversation.targets}/>
+        </Box>
+    )
 }
 
 const mapStateToProps = ({conversations}: IAppState, props: ChatScreenProps) => {

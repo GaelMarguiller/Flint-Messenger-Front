@@ -1,4 +1,4 @@
-import { ListItem, ListItemAvatar, Avatar, ListItemText } from '@material-ui/core';
+import {ListItem, ListItemAvatar, Avatar, ListItemText, makeStyles, createStyles, Theme} from '@material-ui/core';
 import { connect } from 'react-redux';
 import React from 'react';
 import { IAppState } from '../../appReducer';
@@ -7,13 +7,31 @@ import { StyledBadge } from '../../Layout/component/StyledBadges';
 
 interface UserDetailsProps {
     user: IUser
+    displayText: boolean
+    smallStyle: boolean
 }
 
 interface UserDetailsPropsGiven {
     id: string
 }
 
-function UserDetails({user} : UserDetailsProps){
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        blockAvatar: {
+            width: 'inherit',
+            padding: 0
+        },
+        small: {
+            width: theme.spacing(3),
+            height: theme.spacing(3),
+            fontSize: '0.8rem',
+        },
+    })
+)
+
+function UserDetails({user, displayText, smallStyle} : UserDetailsProps){
+    const classes = useStyles();
+
     let avatar;
     if(user.status === "online") {
         avatar = <StyledBadge
@@ -24,22 +42,25 @@ function UserDetails({user} : UserDetailsProps){
             }}
             variant="dot"
         >
-            <Avatar>
+            <Avatar className={smallStyle ? classes.small : undefined}>
                 {user.firstname[0]}{user.lastname[0]}
             </Avatar>
         </StyledBadge>
     } else {
-        avatar = <Avatar> {user.firstname[0]}{user.lastname[0]} </Avatar>
+        avatar = <Avatar className={smallStyle ? classes.small : undefined}> {user.firstname[0]}{user.lastname[0]} </Avatar>
     }
     return (
-        <ListItem>
+        <ListItem className={classes.blockAvatar}>
             <ListItemAvatar>
                 {avatar}
             </ListItemAvatar>
 
-            <ListItemText
-                primary={`${user.firstname} ${user.lastname}`}
-            />
+            {
+                displayText &&
+                <ListItemText
+                    primary={`${user.firstname} ${user.lastname}`}
+                />
+            }
         </ListItem>
     )
 }

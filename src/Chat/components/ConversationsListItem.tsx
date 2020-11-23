@@ -7,7 +7,7 @@ import { IConversation } from '../chatTypes';
 import {IUser} from "../../Users/usersTypes";
 import {IAppState} from "../../appReducer";
 
-function ConversationsListItem({conversation, verifyUnseenMessage, users} : {conversation: IConversation, verifyUnseenMessage: () => void, users: IUser[]}){
+function ConversationsListItem({conversation, verifyUnseenMessage, users} : {conversation: IConversation, users: IUser[], verifyUnseenMessage: () => void}){
     const userId = users.map(user => user._id)
     const targetId = conversation.targets.map(target => target)
     const intersection = userId.filter(key => targetId.includes(key))
